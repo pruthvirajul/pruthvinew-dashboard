@@ -14,32 +14,36 @@ const port = process.env.PORT || 3048;
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
 const pool = new Pool({
-  user: process.env.DB_USER || 'postgres',
-  host: process.env.DB_HOST || 'postgres',
-  database: process.env.DB_DATABASE || 'login',
-  password: process.env.DB_PASSWORD || 'admin123',
-  port: parseInt(process.env.DB_PORT) || 5432,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,   // ✅ FIX
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
 });
+
 
 // ✅ Updated CORS config
 const allowedOrigins = [
-  'http://127.0.0.1:5500',
-  'http://16.170.237.51:8154'
+  "http://16.170.237.51:8153", // signup
+  "http://16.170.237.51:8152", // login
+  "http://16.170.237.51:8151", // forgot
+  "http://16.170.237.51:8154"  // dashboard
 ];
 
 app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS: ' + origin));
+  origin: function (origin, callback) {
+    // allow requests with no origin (like curl, postman)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
     }
+
+    return callback(new Error("CORS blocked: " + origin));
   },
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  exposedHeaders: ['set-cookie']
+  credentials: true
 }));
+
 
 app.use((req, res, next) => {
   console.log('Incoming request:', req.method, req.url);
