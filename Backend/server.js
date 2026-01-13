@@ -24,25 +24,30 @@ const pool = new Pool({
 
 // ✅ Updated CORS config
 const allowedOrigins = [
-  "http://16.170.237.51:8153", // signup
-  "http://16.170.237.51:8152", // login
-  "http://16.170.237.51:8151", // forgot
-  "http://16.170.237.51:8154"  // dashboard
+  "http://16.170.237.51:8153",
+  "http://16.170.237.51:8152",
+  "http://16.170.237.51:8151",
+  "http://16.170.237.51:8154"
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    // allow requests with no origin (like curl, postman)
     if (!origin) return callback(null, true);
 
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
 
-    return callback(new Error("CORS blocked: " + origin));
+    console.log("❌ Blocked by CORS:", origin);
+    return callback(new Error("CORS not allowed"));
   },
-  credentials: true
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+// 🔥 THIS LINE IS CRITICAL
+app.options("*", cors());
 
 
 app.use((req, res, next) => {
