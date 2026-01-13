@@ -24,7 +24,7 @@ const pool = new Pool({
 // ✅ Updated CORS config
 const allowedOrigins = [
   'http://127.0.0.1:5500',
-  'http://3.85.56.63:8154'
+  'http://16.170.237.51:8154'
 ];
 
 app.use(cors({
@@ -194,7 +194,7 @@ app.post('/api/signup', upload.single('profilePicture'), async (req, res) => {
 
 initDatabase().then(() => {
   app.listen(port, () => {
-    console.log(`Server running on http://3.85.56.63:${port}`);
+    console.log(`Server running on http://16.170.237.51:${port}`);
     console.log('Available routes:');
     console.log('GET  /                 -> Login page');
     console.log('GET  /signup           -> Signup page');
