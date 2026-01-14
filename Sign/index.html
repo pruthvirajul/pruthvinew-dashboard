@@ -106,7 +106,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
     formData.append('profilePicture', document.getElementById('profile-picture').files[0]);
 
     try {
-        const response = await fetch('http://16.170.237.51:3048/api/signup', {
+        const response = await fetch('http://13.51.48.214:3048/api/signup', {
             method: 'POST',
             mode: 'cors',
             headers: {
@@ -123,7 +123,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
         }
 
         alert('Signup successful!');
-        window.location.href = 'http://16.170.237.51:8153/';
+        window.location.href = 'http://13.51.48.214:8153/';
     } catch (err) {
         console.error(err);
         alert('Server not reachable');
